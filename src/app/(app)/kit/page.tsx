@@ -39,8 +39,26 @@ export default function KitPage() {
         title="One profile. Every application."
         subtitle="This is the source of truth for every draft. Edit anything here once and it propagates to every application that uses it. Voice in, voice out."
       />
+      {/* Mobile: horizontal tab strip */}
+      <div className="md:hidden border-b rule overflow-x-auto scrollbar-thin">
+        <nav className="flex gap-1 px-4 py-3 min-w-max">
+          {tabs.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={cn(
+                "px-3 py-2 rounded-sm text-[12px] whitespace-nowrap",
+                tab === t.key ? "bg-ink text-paper" : "text-ink/80 hover:bg-[#EFE9DA]"
+              )}
+            >
+              {t.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+
       <div className="flex">
-        <aside className="w-72 shrink-0 border-r rule p-6 sticky top-0 self-start">
+        <aside className="hidden md:block w-72 shrink-0 border-r rule p-6 sticky top-0 self-start">
           <div className="eyebrow mb-3">Sections</div>
           <nav className="space-y-1">
             {tabs.map((t) => (
@@ -57,7 +75,7 @@ export default function KitPage() {
             ))}
           </nav>
         </aside>
-        <div className="flex-1 px-10 py-10">
+        <div className="flex-1 min-w-0 px-4 sm:px-6 md:px-10 py-6 md:py-10">
           {tab === "identity" && <IdentityTab />}
           {tab === "disciplines" && <DisciplinesTab />}
           {tab === "statements" && <StatementsTab />}
@@ -74,12 +92,12 @@ export default function KitPage() {
 
 function TabHeader({ title, subtitle, action }: { title: string; subtitle: string; action?: React.ReactNode }) {
   return (
-    <div className="flex items-end justify-between mb-8">
-      <div>
-        <h2 className="font-display text-3xl leading-tight">{title}</h2>
+    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6 md:mb-8">
+      <div className="min-w-0">
+        <h2 className="font-display text-2xl sm:text-3xl leading-tight">{title}</h2>
         <p className="text-muted text-sm mt-2 max-w-prose2 leading-relaxed">{subtitle}</p>
       </div>
-      {action}
+      {action && <div className="flex gap-2 flex-wrap shrink-0">{action}</div>}
     </div>
   );
 }
@@ -89,7 +107,7 @@ function IdentityTab() {
   return (
     <>
       <TabHeader title="Identity & eligibility" subtitle="Captured once, used by every opportunity's eligibility check and pre-submit validation." />
-      <div className="grid grid-cols-2 gap-6 max-w-3xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-3xl">
         <Field label="Legal name" defaultValue={artist.legal_name} />
         <Field label="Public name" defaultValue={artist.public_name} />
         <Field label="Pronouns" defaultValue={artist.pronouns} />
@@ -275,7 +293,7 @@ function WorksTab() {
         subtitle="Every work captured once with full metadata. We auto-render each funder's required caption format (NYFA's title/date/materials/dimensions, Berlinale's PDF context, MacDowell's per-discipline list)."
         action={<button className="btn btn-primary"><Plus size={13} /> Add work</button>}
       />
-      <div className="grid grid-cols-3 gap-6 max-w-6xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl">
         {works.map((w) => (
           <div key={w.id} className="paper-card overflow-hidden group">
             <div className="aspect-[4/3] bg-[#E7DDC9] relative overflow-hidden">
@@ -323,7 +341,7 @@ function ProjectsTab() {
               </div>
               <button className="text-muted hover:text-ink"><Pencil size={14} /></button>
             </div>
-            <div className="mt-4 grid grid-cols-3 gap-4 text-xs">
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-xs">
               <Variant label="Logline" body={p.logline} />
               <Variant label="500 words" body={p.summary_500} />
               <Variant label="1,500 words" body={p.summary_1500 || "—"} />

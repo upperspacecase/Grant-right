@@ -33,8 +33,8 @@ export default function OpportunitiesPage() {
           </Link>
         }
       />
-      <div className="px-8 py-6 flex items-center gap-3 border-b rule">
-        <div className="flex-1 relative max-w-md">
+      <div className="px-4 sm:px-6 md:px-8 py-4 sm:py-6 flex flex-col sm:flex-row sm:items-center gap-3 border-b rule">
+        <div className="flex-1 relative w-full sm:max-w-md">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
           <input
             value={q}
@@ -43,13 +43,13 @@ export default function OpportunitiesPage() {
             placeholder="Search funders, programs…"
           />
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 overflow-x-auto -mx-1 px-1 scrollbar-thin">
           {types.map((t) => (
             <button
               key={t}
               onClick={() => setFilter(t)}
               className={cn(
-                "px-3 py-1.5 text-[12px] rounded-sm transition-colors",
+                "px-3 py-1.5 text-[12px] rounded-sm transition-colors whitespace-nowrap shrink-0",
                 filter === t ? "bg-ink text-paper" : "text-muted hover:bg-[#EFE9DA]"
               )}
             >
@@ -58,7 +58,7 @@ export default function OpportunitiesPage() {
           ))}
         </div>
       </div>
-      <div className="px-8 py-8 grid grid-cols-2 gap-5">
+      <div className="px-4 sm:px-6 md:px-8 py-6 sm:py-8 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
         {filtered.map((o) => {
           const hasApp = applications.find((a) => a.opportunity_id === o.id);
           const days = daysUntil(o.deadline);
@@ -69,9 +69,9 @@ export default function OpportunitiesPage() {
               key={o.id}
               className="paper-card p-6 hover:bg-[#FBF8F1] transition-colors block"
             >
-              <div className="flex items-start justify-between mb-3">
+              <div className="flex items-start justify-between gap-3 mb-3 flex-wrap">
                 <TypePill type={o.type} />
-                <div className={cn("eyebrow", urgent && "text-accent")}>
+                <div className={cn("eyebrow text-right", urgent && "text-accent")}>
                   {relativeDeadline(o.deadline)} · {formatDate(o.deadline)}
                 </div>
               </div>

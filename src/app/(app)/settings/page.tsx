@@ -13,9 +13,9 @@ export default function SettingsPage() {
         title="How Grant-Right behaves"
         subtitle="Drafting behavior, integrations, billing. The defaults are the recommended settings for working artists."
       />
-      <div className="px-8 py-8 max-w-4xl space-y-8">
+      <div className="px-4 sm:px-6 md:px-8 py-6 sm:py-8 max-w-4xl space-y-6 sm:space-y-8">
         <Section title="Drafting behavior" subtitle="The trade-off is between faithful-to-your-voice and willing-to-rewrite. Default is balanced.">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {[
               { key: "strict", label: "Strict — recombine only", desc: "Pure extractive: every clause is from your kit. Slowest, most faithful." },
               { key: "balanced", label: "Balanced — two-pass (Recommended)", desc: "Pass 1 recombines your language. Pass 2 tailors with new prose only where the prompt requires it." },
@@ -61,7 +61,7 @@ export default function SettingsPage() {
         </Section>
 
         <Section title="Integrations" subtitle="V2 work. Each integration is independent and optional.">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Integration name="Are.na" status="planned" desc="OAuth · import channels as Works and Projects" />
             <Integration name="Artwork Archive" status="planned" desc="CSV import · CV + inventory" />
             <Integration name="Behance / Adobe Portfolio" status="planned" desc="OAuth · case studies as Works" />
@@ -92,7 +92,7 @@ export default function SettingsPage() {
         </Section>
 
         <Section title="Account" subtitle="">
-          <div className="grid grid-cols-2 gap-4 max-w-2xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-w-2xl">
             <Field label="Email" defaultValue="studio@miraokonkwo.com" />
             <Field label="Password" defaultValue="" placeholder="Set a new password" />
             <Field label="Default discipline filter on Opportunities" defaultValue="Visual arts / sculpture / installation" />

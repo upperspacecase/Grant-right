@@ -45,10 +45,10 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
 
   return (
     <div className="paper-card">
-      <div className="px-5 pt-4 pb-3 border-b rule">
-        <div className="flex items-start justify-between gap-3 mb-2">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
+      <div className="px-4 sm:px-5 pt-4 pb-3 border-b rule">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-2">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 mb-1 flex-wrap">
               <span className="eyebrow">{spec.key.replace(/_/g, " ")}</span>
               {spec.required && <span className="chip chip-warn">Required</span>}
               {anonymous && <span className="chip chip-accent">Anonymous review</span>}
@@ -58,7 +58,7 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
               <p className="text-xs text-muted italic mt-1.5 max-w-prose2">{spec.notes}</p>
             )}
           </div>
-          <div className="text-right shrink-0">
+          <div className="text-left sm:text-right shrink-0">
             <div className={cn(
               "font-mono text-sm",
               overLimit && "text-accent",
@@ -67,7 +67,7 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
               {measured}<span className="text-muted">/{spec.limit_value}</span>
             </div>
             <div className="text-[10px] text-muted uppercase tracking-wider">{spec.limit_unit}</div>
-            <div className="mt-1 h-1 w-24 bg-rule rounded-full overflow-hidden">
+            <div className="mt-1 h-1 w-24 bg-rule rounded-full overflow-hidden sm:ml-auto">
               <div
                 className={cn(
                   "h-full transition-all",
@@ -80,7 +80,7 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
         </div>
       </div>
 
-      <div className="flex items-center gap-1 px-5 pt-3 border-b rule pb-3">
+      <div className="flex items-center gap-1 px-4 sm:px-5 pt-3 border-b rule pb-3 flex-wrap">
         <button
           onClick={runDraft}
           className="btn btn-accent text-xs"
@@ -100,7 +100,7 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
 
       {mode === "edit" && (
         <textarea
-          className="textarea border-0 min-h-44 px-5 py-4 focus:shadow-none focus:outline-none"
+          className="textarea border-0 min-h-44 px-4 sm:px-5 py-4 focus:shadow-none focus:outline-none"
           style={{ borderRadius: 0 }}
           value={section.content}
           onChange={(e) => onChange(e.target.value)}
@@ -109,7 +109,7 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
       )}
 
       {mode === "draft" && (
-        <div className="px-5 py-4">
+        <div className="px-4 sm:px-5 py-4">
           <DraftPanel
             content={mockDraft}
             streaming={draftStreaming}
@@ -140,7 +140,7 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
         </div>
       )}
 
-      <div className="px-5 py-3 border-t rule flex items-center gap-3 text-xs text-muted">
+      <div className="px-4 sm:px-5 py-3 border-t rule flex items-center gap-3 text-xs text-muted">
         {overLimit ? (
           <>
             <AlertTriangle size={13} className="text-accent" />
@@ -193,7 +193,7 @@ function DraftPanel({
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 text-[10px] mb-3 text-muted">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] mb-3 text-muted">
         <div className="paper-card p-2 bg-[#FBF8F1]">
           <div className="eyebrow text-[9px] mb-1">Pass 1 · recombine</div>
           Extracted phrases from your 250-word statement, the Outbuildings 1,500-word, and your Aliquippa Carrier long caption.
@@ -208,7 +208,7 @@ function DraftPanel({
         </div>
       </div>
 
-      <div className="border rule p-5 bg-[#FFFEFA] font-serif text-[17px] leading-relaxed whitespace-pre-line">
+      <div className="border rule p-4 sm:p-5 bg-[#FFFEFA] font-serif text-[15px] sm:text-[17px] leading-relaxed whitespace-pre-line">
         {streaming ? (
           <div className="text-muted italic">Claude is drafting from your kit…</div>
         ) : (
@@ -223,20 +223,20 @@ function DraftPanel({
 
       <div className="mt-4">
         <div className="field-label">Regenerate with feedback</div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <input
             className="input flex-1"
             placeholder="e.g. 'more specific about Aliquippa', 'cut the conveyor description', 'lean into urgency'"
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
           />
-          <button className="btn btn-ghost">
+          <button className="btn btn-ghost shrink-0">
             <RefreshCcw size={13} /> Regenerate
           </button>
         </div>
       </div>
 
-      <div className="mt-5 flex items-center justify-end gap-2">
+      <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-end gap-2">
         <button onClick={onCancel} className="btn btn-ghost">Discard</button>
         <button onClick={onAccept} className="btn btn-primary">Accept into editor</button>
       </div>

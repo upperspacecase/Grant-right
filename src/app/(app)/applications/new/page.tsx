@@ -27,7 +27,7 @@ export default function NewApplicationPage() {
           </Link>
         }
       />
-      <div className="px-8 py-6">
+      <div className="px-4 sm:px-6 md:px-8 py-6">
         <div className="relative max-w-xl mb-6">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
           <input
@@ -37,7 +37,7 @@ export default function NewApplicationPage() {
             placeholder="Search opportunities you haven't started yet…"
           />
         </div>
-        <div className="grid grid-cols-2 gap-5 max-w-5xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 max-w-5xl">
           {choices.map((o) => (
             <Link
               href={`/applications/new-from/${o.id}`}

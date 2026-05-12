@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import {
   LayoutDashboard,
   User,
@@ -9,7 +10,9 @@ import {
   Settings,
   Sparkles,
   ChevronRight,
-  Plus
+  Plus,
+  Menu,
+  X
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 
@@ -23,16 +26,53 @@ const nav = [
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    setDrawerOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = drawerOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [drawerOpen]);
+
   return (
     <div className="min-h-screen flex bg-paper text-ink">
-      <aside className="w-64 shrink-0 border-r rule bg-[#FBF8F1] flex flex-col">
-        <div className="px-6 pt-7 pb-6 border-b rule">
+      {/* Mobile drawer overlay */}
+      {drawerOpen && (
+        <button
+          aria-label="Close menu"
+          onClick={() => setDrawerOpen(false)}
+          className="md:hidden fixed inset-0 bg-ink/40 z-30"
+        />
+      )}
+
+      {/* Sidebar — drawer on mobile, persistent on md+ */}
+      <aside
+        className={cn(
+          "w-64 shrink-0 border-r rule bg-[#FBF8F1] flex flex-col",
+          "fixed inset-y-0 left-0 z-40 transform transition-transform duration-200",
+          "md:static md:translate-x-0",
+          drawerOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        )}
+      >
+        <div className="px-6 pt-7 pb-6 border-b rule flex items-center justify-between">
           <Link href="/dashboard" className="block">
             <div className="font-display text-2xl leading-none">Grant-Right</div>
             <div className="eyebrow mt-2">For artists, by design</div>
           </Link>
+          <button
+            onClick={() => setDrawerOpen(false)}
+            className="md:hidden text-muted hover:text-ink p-1 -mr-1"
+            aria-label="Close menu"
+          >
+            <X size={18} />
+          </button>
         </div>
-        <nav className="px-3 py-5 flex-1">
+        <nav className="px-3 py-5 flex-1 overflow-y-auto">
           {nav.map((item) => {
             const active = pathname.startsWith(item.href);
             const Icon = item.icon;
@@ -64,21 +104,35 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </aside>
+
       <main className="flex-1 flex flex-col min-w-0">
-        <header className="h-14 border-b rule px-8 flex items-center justify-between bg-paper">
-          <div className="text-xs text-muted">
-            Signed in as <span className="text-ink font-medium">Mira Okonkwo</span> · Brooklyn, NY
+        <header className="h-14 border-b rule px-4 sm:px-6 md:px-8 flex items-center justify-between bg-paper gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <button
+              onClick={() => setDrawerOpen(true)}
+              className="md:hidden text-ink p-1 -ml-1"
+              aria-label="Open menu"
+            >
+              <Menu size={20} />
+            </button>
+            <div className="text-xs text-muted truncate">
+              <span className="hidden sm:inline">Signed in as </span>
+              <span className="text-ink font-medium">Mira Okonkwo</span>
+              <span className="hidden sm:inline"> · Brooklyn, NY</span>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <Link href="/applications/new" className="btn btn-ghost">
-              <Plus size={13} /> New application
+              <Plus size={13} />
+              <span className="hidden sm:inline">New application</span>
+              <span className="sm:hidden">New</span>
             </Link>
             <div className="size-8 rounded-full bg-ink text-paper flex items-center justify-center text-[11px] font-medium">
               MO
             </div>
           </div>
         </header>
-        <div className="flex-1 overflow-auto">{children}</div>
+        <div className="flex-1 overflow-x-hidden">{children}</div>
       </main>
     </div>
   );
@@ -96,14 +150,22 @@ export function PageHeader({
   actions?: React.ReactNode;
 }) {
   return (
-    <div className="px-8 pt-10 pb-6 border-b rule">
-      <div className="flex items-end justify-between gap-6">
-        <div>
+    <div className="px-4 sm:px-6 md:px-8 pt-7 sm:pt-10 pb-5 sm:pb-6 border-b rule">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-6">
+        <div className="min-w-0">
           {eyebrow && <div className="eyebrow mb-3">{eyebrow}</div>}
-          <h1 className="font-display text-4xl leading-tight">{title}</h1>
-          {subtitle && <p className="mt-3 text-muted text-[15px] max-w-prose2 leading-relaxed">{subtitle}</p>}
+          <h1 className="font-display text-3xl sm:text-4xl leading-tight">{title}</h1>
+          {subtitle && (
+            <p className="mt-3 text-muted text-[14px] sm:text-[15px] max-w-prose2 leading-relaxed">
+              {subtitle}
+            </p>
+          )}
         </div>
-        {actions && <div className="flex items-center gap-2 pb-1">{actions}</div>}
+        {actions && (
+          <div className="flex items-center gap-2 flex-wrap md:flex-nowrap md:pb-1 md:shrink-0">
+            {actions}
+          </div>
+        )}
       </div>
     </div>
   );

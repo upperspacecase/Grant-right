@@ -14,8 +14,27 @@ const steps = [
 export default function OnboardingPage() {
   const [step, setStep] = useState(0);
   return (
-    <div className="min-h-screen bg-paper text-ink flex">
-      <aside className="w-72 shrink-0 border-r rule bg-[#FBF8F1] p-8">
+    <div className="min-h-screen bg-paper text-ink flex flex-col md:flex-row">
+      {/* Mobile: top header + progress strip */}
+      <div className="md:hidden border-b rule bg-[#FBF8F1] px-5 py-4">
+        <Link href="/" className="block font-display text-xl mb-1">Grant-Right</Link>
+        <div className="eyebrow mb-3">Set up your kit · step {step + 1} of {steps.length}</div>
+        <div className="flex items-center gap-2">
+          {steps.map((s, i) => (
+            <div
+              key={s.key}
+              className={cn(
+                "flex-1 h-1 rounded-full",
+                i < step ? "bg-sage" : i === step ? "bg-ink" : "bg-rule"
+              )}
+            />
+          ))}
+        </div>
+        <div className="mt-2 text-[12px] text-ink font-medium">{steps[step].label}</div>
+      </div>
+
+      {/* Desktop sidebar */}
+      <aside className="hidden md:block w-72 shrink-0 border-r rule bg-[#FBF8F1] p-8">
         <Link href="/" className="block font-display text-2xl mb-1">Grant-Right</Link>
         <div className="eyebrow mb-8">Set up your kit</div>
         <ol className="space-y-1">
@@ -48,7 +67,7 @@ export default function OnboardingPage() {
         </div>
       </aside>
 
-      <main className="flex-1 px-16 py-12 max-w-3xl">
+      <main className="flex-1 min-w-0 px-5 sm:px-8 md:px-16 py-8 md:py-12 max-w-3xl">
         {step === 0 && <Identity onNext={() => setStep(1)} />}
         {step === 1 && <Disciplines onNext={() => setStep(2)} onBack={() => setStep(0)} />}
         {step === 2 && <Imports onNext={() => setStep(3)} onBack={() => setStep(1)} />}
@@ -60,10 +79,10 @@ export default function OnboardingPage() {
 
 function StepHeader({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle: string }) {
   return (
-    <div className="mb-8">
+    <div className="mb-6 md:mb-8">
       <div className="eyebrow mb-3">{eyebrow}</div>
-      <h2 className="font-display text-3xl leading-tight mb-3">{title}</h2>
-      <p className="text-muted text-[15px] max-w-prose2 leading-relaxed">{subtitle}</p>
+      <h2 className="font-display text-2xl sm:text-3xl leading-tight mb-3">{title}</h2>
+      <p className="text-muted text-[14px] sm:text-[15px] max-w-prose2 leading-relaxed">{subtitle}</p>
     </div>
   );
 }
@@ -99,7 +118,7 @@ function Identity({ onNext }: { onNext: () => void }) {
         title="The boring parts that disqualify applications"
         subtitle="Almost half of artist grants reject applications on eligibility before any reviewer reads the proposal. We capture these once and use them to pre-filter opportunities and to fail the pre-submit check before you submit."
       />
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
         <Field label="Public name" defaultValue="Mira Okonkwo" />
         <Field label="Pronouns" defaultValue="she/her" />
         <Field label="Year of birth" defaultValue="1989" />
@@ -166,7 +185,7 @@ function Imports({ onNext, onBack }: { onNext: () => void; onBack: () => void })
         title="Pull in what you already have"
         subtitle="Most artists keep their CV in a Word doc, work samples in a Drive folder, and a statement saved as v_FINAL_FINAL.docx. We import from there. Skip any source you don't use."
       />
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <ImportCard
           title="Are.na"
           subtitle="OAuth connect. We pull your channels as draft Works and Projects."

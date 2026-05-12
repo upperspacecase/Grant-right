@@ -38,29 +38,29 @@ export default function ApplicationWorkspace({ params }: { params: Promise<{ id:
   return (
     <>
       <div className="border-b rule bg-[#FBF8F1]/60">
-        <div className="px-8 pt-6 pb-5">
+        <div className="px-4 sm:px-6 md:px-8 pt-5 sm:pt-6 pb-4 sm:pb-5">
           <Link href="/applications" className="text-xs text-muted hover:text-ink flex items-center gap-1 mb-3">
             <ArrowLeft size={12} /> All applications
           </Link>
-          <div className="flex items-end justify-between gap-6">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 lg:gap-6">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <TypePill type={opp.type} />
                 <StatusPill status={app.status} />
                 {anonymous && <span className="chip chip-accent">Anonymous review</span>}
               </div>
-              <h1 className="font-display text-3xl leading-tight">{opp.program}</h1>
+              <h1 className="font-display text-2xl sm:text-3xl leading-tight">{opp.program}</h1>
               <div className="text-sm text-muted mt-1">{opp.funder} · {opp.geography}</div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <a href={opp.url} target="_blank" rel="noreferrer" className="btn btn-ghost text-xs">
-                <ExternalLink size={12} /> Official call
+                <ExternalLink size={12} /> <span className="hidden sm:inline">Official call</span><span className="sm:hidden">Call</span>
               </a>
               <button className="btn btn-ghost text-xs">
-                <Download size={12} /> Export PDF
+                <Download size={12} /> <span className="hidden sm:inline">Export PDF</span><span className="sm:hidden">PDF</span>
               </button>
               <button className="btn btn-primary text-xs">
-                <Send size={12} /> Pre-submit check
+                <Send size={12} /> <span className="hidden sm:inline">Pre-submit check</span><span className="sm:hidden">Check</span>
               </button>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function ApplicationWorkspace({ params }: { params: Promise<{ id:
 
       <div className="grid grid-cols-12 gap-0">
         {/* Left rail: opportunity meta */}
-        <aside className="col-span-3 border-r rule p-6 space-y-6 bg-[#FBF8F1]/40 min-h-[calc(100vh-200px)]">
+        <aside className="col-span-12 lg:col-span-3 border-b lg:border-b-0 lg:border-r rule p-4 sm:p-6 space-y-5 sm:space-y-6 bg-[#FBF8F1]/40 lg:min-h-[calc(100vh-200px)]">
           <div>
             <div className="eyebrow mb-3">Deadline</div>
             <div className="font-display text-3xl text-accent leading-none">{daysUntil(opp.deadline)}</div>
@@ -115,7 +115,7 @@ export default function ApplicationWorkspace({ params }: { params: Promise<{ id:
         </aside>
 
         {/* Center: sections */}
-        <main className="col-span-6 p-8 space-y-6">
+        <main className="col-span-12 lg:col-span-6 p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6 min-w-0">
           {opp.sections.map((spec) => {
             const sec = app.sections.find((s) => s.key === spec.key) ?? {
               key: spec.key,
@@ -147,7 +147,7 @@ export default function ApplicationWorkspace({ params }: { params: Promise<{ id:
         </main>
 
         {/* Right rail: kit + checklist */}
-        <aside className="col-span-3 border-l rule p-6 space-y-5 bg-[#FBF8F1]/40 min-h-[calc(100vh-200px)]">
+        <aside className="col-span-12 lg:col-span-3 border-t lg:border-t-0 lg:border-l rule p-4 sm:p-6 space-y-5 bg-[#FBF8F1]/40 lg:min-h-[calc(100vh-200px)]">
           <PreSubmitChecklist app={app} opp={opp} />
           <KitDock />
         </aside>
@@ -174,7 +174,7 @@ function WorkSamples({
         </div>
         <button className="btn btn-ghost text-xs">Reorder · {app.work_sample_slots.length} selected</button>
       </div>
-      <div className="grid grid-cols-3 gap-3 p-5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 sm:p-5">
         {app.work_sample_slots.map((slot: any, i: number) => {
           const w = works.find((x) => x.id === slot.work_id);
           if (!w) return null;
@@ -209,30 +209,47 @@ function BudgetSection({ app }: { app: any }) {
   const toRaise = total - confirmed;
   return (
     <div className="paper-card">
-      <div className="px-5 py-4 border-b rule flex items-center justify-between">
+      <div className="px-4 sm:px-5 py-4 border-b rule flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <div className="eyebrow">Budget</div>
           <div className="text-sm mt-1">Itemized, with status flags. Activities in narrative must map to lines here.</div>
         </div>
-        <div className="text-right text-xs">
+        <div className="text-left sm:text-right text-xs shrink-0">
           <div className="font-mono text-lg text-ink">${total.toLocaleString()}</div>
           <div className="text-muted">${confirmed.toLocaleString()} confirmed · ${toRaise.toLocaleString()} to raise</div>
         </div>
       </div>
       <ul>
         {app.budget_lines.map((l: any, i: number) => (
-          <li key={i} className="grid grid-cols-12 gap-3 px-5 py-2.5 border-b rule items-center text-sm last:border-0">
-            <div className="col-span-3 text-xs text-muted">{l.category}</div>
-            <div className="col-span-6">{l.description}</div>
-            <div className="col-span-1">
-              <span className={cn(
-                "chip text-[9px]",
-                l.status === "confirmed" && "chip-sage",
-                l.status === "pending" && "chip-warn",
-                l.status === "to_raise" && "chip-accent"
-              )}>{l.status?.replace("_", " ")}</span>
+          <li key={i} className="px-4 sm:px-5 py-3 border-b rule last:border-0 text-sm">
+            <div className="hidden sm:grid grid-cols-12 gap-3 items-center">
+              <div className="col-span-3 text-xs text-muted">{l.category}</div>
+              <div className="col-span-6">{l.description}</div>
+              <div className="col-span-1">
+                <span className={cn(
+                  "chip text-[9px]",
+                  l.status === "confirmed" && "chip-sage",
+                  l.status === "pending" && "chip-warn",
+                  l.status === "to_raise" && "chip-accent"
+                )}>{l.status?.replace("_", " ")}</span>
+              </div>
+              <div className="col-span-2 text-right font-mono">${l.amount.toLocaleString()}</div>
             </div>
-            <div className="col-span-2 text-right font-mono">${l.amount.toLocaleString()}</div>
+            <div className="sm:hidden">
+              <div className="flex items-center justify-between gap-2 mb-1">
+                <div className="text-xs text-muted">{l.category}</div>
+                <div className="font-mono text-sm shrink-0">${l.amount.toLocaleString()}</div>
+              </div>
+              <div className="text-sm">{l.description}</div>
+              <div className="mt-1.5">
+                <span className={cn(
+                  "chip text-[9px]",
+                  l.status === "confirmed" && "chip-sage",
+                  l.status === "pending" && "chip-warn",
+                  l.status === "to_raise" && "chip-accent"
+                )}>{l.status?.replace("_", " ")}</span>
+              </div>
+            </div>
           </li>
         ))}
       </ul>

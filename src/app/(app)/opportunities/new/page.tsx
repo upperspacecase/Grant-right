@@ -15,15 +15,15 @@ export default function NewOpportunityPage() {
         title="Add a call"
         subtitle="Paste the call URL or upload the PDF — we extract the prompts, limits, eligibility, and deadlines automatically. Edit anything that came out wrong."
       />
-      <div className="px-8 py-8 max-w-3xl">
+      <div className="px-4 sm:px-6 md:px-8 py-6 sm:py-8 max-w-3xl">
         <div className="paper-card p-5 mb-6">
           <div className="flex items-center gap-2 mb-3">
             <Sparkles size={14} className="text-accent" />
             <div className="eyebrow">Smart import (recommended)</div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input className="input flex-1" placeholder="Paste the call URL (e.g. https://creative-capital.org/...)" />
-            <button className="btn btn-primary">
+            <button className="btn btn-primary shrink-0 justify-center">
               Extract <ArrowRight size={13} />
             </button>
           </div>
@@ -34,7 +34,7 @@ export default function NewOpportunityPage() {
 
         <div className="divider-dots mb-6" />
 
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6">
           <Field label="Funder" placeholder="e.g. Headlands Center for the Arts" />
           <Field label="Program name" placeholder="e.g. Artist in Residence 2026" />
           <Field label="Type" placeholder="residency / project_grant / fellowship / emergency / festival" />
@@ -87,7 +87,7 @@ export default function NewOpportunityPage() {
                   className="textarea min-h-20 mb-3"
                   placeholder="Paste the prompt exactly as it appears in the call…"
                 />
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <Field label="Limit unit" placeholder="words / chars / minutes / pages" />
                   <Field label="Limit value" placeholder="500" />
                   <Field label="Required?" placeholder="yes / no" />

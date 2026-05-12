@@ -25,9 +25,9 @@ export default function DashboardPage() {
         subtitle="The next deadlines, what's in draft, what needs your attention. Everything below is ranked by what could disqualify your submission if you don't get to it."
       />
 
-      <div className="px-8 py-8 grid grid-cols-12 gap-6">
+      <div className="px-4 sm:px-6 md:px-8 py-6 md:py-8 grid grid-cols-12 gap-4 md:gap-6">
         {/* Stats strip */}
-        <div className="col-span-12 grid grid-cols-4 gap-4">
+        <div className="col-span-12 grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           <Stat label="Open applications" value={String(applications.filter((a) => a.status === "drafting").length)} subtitle="In your workspace" />
           <Stat label="Next deadline" value={upcoming[0] ? relativeDeadline(upcoming[0].o.deadline) : "—"} subtitle={upcoming[0]?.o.program ?? "Nothing on deck"} />
           <Stat label="Kit completeness" value={`${completeness.pct}%`} subtitle={`${completeness.done} of ${completeness.total} sections`} />
@@ -40,7 +40,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Upcoming deadlines */}
-        <section className="col-span-8">
+        <section className="col-span-12 lg:col-span-8">
           <SectionHeader title="Upcoming deadlines" link="/applications" />
           <div className="paper-card divide-y rule">
             {upcoming.map(({ a, o }) => {
@@ -50,23 +50,27 @@ export default function DashboardPage() {
                 <Link
                   href={`/applications/${a.id}`}
                   key={a.id}
-                  className="grid grid-cols-12 items-center gap-4 px-5 py-4 hover:bg-[#FBF8F1] transition-colors"
+                  className="grid grid-cols-12 items-center gap-3 sm:gap-4 px-4 sm:px-5 py-4 hover:bg-[#FBF8F1] transition-colors"
                 >
-                  <div className="col-span-1 text-center">
-                    <div className={`text-2xl font-display ${urgent ? "text-accent" : "text-ink"}`}>{days}</div>
+                  <div className="col-span-2 sm:col-span-1 text-center">
+                    <div className={`text-xl sm:text-2xl font-display ${urgent ? "text-accent" : "text-ink"}`}>{days}</div>
                     <div className="eyebrow text-[9px]">days</div>
                   </div>
-                  <div className="col-span-6">
-                    <div className="font-display text-[17px] leading-tight">{o.program}</div>
-                    <div className="text-xs text-muted mt-1">{o.funder} · {o.geography}</div>
+                  <div className="col-span-10 sm:col-span-6">
+                    <div className="font-display text-[16px] sm:text-[17px] leading-tight">{o.program}</div>
+                    <div className="text-xs text-muted mt-1 truncate">{o.funder} · {o.geography}</div>
+                    <div className="flex sm:hidden items-center gap-2 mt-2">
+                      <TypePill type={o.type} />
+                      <StatusPill status={a.status} />
+                    </div>
                   </div>
-                  <div className="col-span-2 text-xs">
+                  <div className="hidden sm:block col-span-2 text-xs">
                     <TypePill type={o.type} />
                   </div>
-                  <div className="col-span-2 text-xs">
+                  <div className="hidden sm:block col-span-2 text-xs">
                     <StatusPill status={a.status} />
                   </div>
-                  <div className="col-span-1 text-right text-muted">
+                  <div className="hidden sm:block col-span-1 text-right text-muted">
                     <ArrowRight size={14} />
                   </div>
                 </Link>
@@ -76,7 +80,7 @@ export default function DashboardPage() {
         </section>
 
         {/* Right rail */}
-        <aside className="col-span-4 space-y-6">
+        <aside className="col-span-12 lg:col-span-4 space-y-5 md:space-y-6">
           {/* Completeness */}
           <div className="paper-card p-5">
             <div className="flex items-center justify-between mb-3">
@@ -137,9 +141,9 @@ export default function DashboardPage() {
         </aside>
 
         {/* Recommended */}
-        <section className="col-span-12 mt-4">
+        <section className="col-span-12 mt-2 md:mt-4">
           <SectionHeader title="Recommended for you" subtitle="Filtered by your eligibility: NY State resident, US citizen, 25+, 9 years practice, not in a degree program." link="/opportunities" />
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {recommended.slice(0, 3).map((o) => (
               <Link href={`/opportunities/${o.id}`} key={o.id} className="paper-card p-5 hover:bg-[#FBF8F1] transition-colors block">
                 <div className="flex items-start justify-between mb-3">

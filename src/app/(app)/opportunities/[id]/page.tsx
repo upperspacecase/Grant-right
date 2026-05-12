@@ -39,8 +39,8 @@ export default function OpportunityDetail({ params }: { params: Promise<{ id: st
         }
       />
 
-      <div className="px-8 py-8 grid grid-cols-12 gap-8">
-        <div className="col-span-8 space-y-8">
+      <div className="px-4 sm:px-6 md:px-8 py-6 sm:py-8 grid grid-cols-12 gap-6 md:gap-8">
+        <div className="col-span-12 lg:col-span-8 space-y-6 md:space-y-8 min-w-0">
           <section>
             <h3 className="font-display text-xl mb-3">Eligibility</h3>
             <ul className="space-y-2 text-sm">
@@ -66,8 +66,8 @@ export default function OpportunityDetail({ params }: { params: Promise<{ id: st
             <ol className="space-y-3">
               {opp.sections.map((s, i) => (
                 <li key={s.key} className="paper-card p-4">
-                  <div className="flex items-start justify-between gap-3 mb-1">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-start justify-between gap-3 mb-1 flex-wrap">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className="eyebrow">Section {i + 1}</span>
                       <span className="chip">
                         {s.limit_value} {s.limit_unit}
@@ -104,7 +104,7 @@ export default function OpportunityDetail({ params }: { params: Promise<{ id: st
           </section>
         </div>
 
-        <aside className="col-span-4 space-y-5">
+        <aside className="col-span-12 lg:col-span-4 space-y-5">
           <div className="paper-card p-5">
             <div className="eyebrow mb-3">At a glance</div>
             <ul className="space-y-3 text-sm">

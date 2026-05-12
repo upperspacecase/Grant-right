@@ -46,7 +46,7 @@ export default function NewFromOpportunity({ params }: { params: Promise<{ id: s
         title={opp.program}
         subtitle={`Confirm that you want to start drafting. We'll pre-populate the workspace from your kit. You can change any prefill before submit.`}
       />
-      <div className="px-8 py-8 max-w-3xl space-y-6">
+      <div className="px-4 sm:px-6 md:px-8 py-6 sm:py-8 max-w-3xl space-y-6">
         <div className="paper-card p-5">
           <div className="flex items-start justify-between mb-3">
             <TypePill type={opp.type} />

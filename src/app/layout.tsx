@@ -1,5 +1,18 @@
 import type { Metadata, Viewport } from "next";
+import { Fredoka, Nunito } from "next/font/google";
 import "./globals.css";
+
+const fredoka = Fredoka({
+  variable: "--font-fredoka",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Grant-Right — the artist's grant workspace",
@@ -16,7 +29,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={`${fredoka.variable} ${nunito.variable} antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }

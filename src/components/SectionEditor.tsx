@@ -12,6 +12,11 @@ import {
 import { cn } from "@/lib/cn";
 import { countWords, countChars } from "@/lib/format";
 import type { ApplicationSection, SectionSpec } from "@/lib/types";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
   spec: SectionSpec;
@@ -44,34 +49,34 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
   }
 
   return (
-    <div className="paper-card">
-      <div className="px-4 sm:px-5 pt-4 pb-3 border-b rule">
+    <Card className="overflow-hidden">
+      <div className="px-4 sm:px-5 pt-4 pb-3 border-b border-border">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-2">
           <div className="min-w-0">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
               <span className="eyebrow">{spec.key.replace(/_/g, " ")}</span>
-              {spec.required && <span className="chip chip-warn">Required</span>}
-              {anonymous && <span className="chip chip-accent">Anonymous review</span>}
+              {spec.required && <Badge variant="warn">Required</Badge>}
+              {anonymous && <Badge variant="primary">Anonymous review</Badge>}
             </div>
-            <p className="font-serif text-[15px] leading-relaxed text-ink/90 max-w-prose2">{spec.prompt}</p>
+            <p className="text-[15px] leading-relaxed text-foreground/90 max-w-prose2">{spec.prompt}</p>
             {spec.notes && (
-              <p className="text-xs text-muted italic mt-1.5 max-w-prose2">{spec.notes}</p>
+              <p className="text-xs text-muted-foreground italic mt-1.5 max-w-prose2">{spec.notes}</p>
             )}
           </div>
           <div className="text-left sm:text-right shrink-0">
             <div className={cn(
               "font-mono text-sm",
-              overLimit && "text-accent",
+              overLimit && "text-primary",
               nearLimit && "text-warn"
             )}>
-              {measured}<span className="text-muted">/{spec.limit_value}</span>
+              {measured}<span className="text-muted-foreground">/{spec.limit_value}</span>
             </div>
-            <div className="text-[10px] text-muted uppercase tracking-wider">{spec.limit_unit}</div>
-            <div className="mt-1 h-1 w-24 bg-rule rounded-full overflow-hidden sm:ml-auto">
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wider">{spec.limit_unit}</div>
+            <div className="mt-1 h-1 w-24 bg-border rounded-full overflow-hidden sm:ml-auto">
               <div
                 className={cn(
                   "h-full transition-all",
-                  overLimit ? "bg-accent" : nearLimit ? "bg-warn" : "bg-sage"
+                  overLimit ? "bg-primary" : nearLimit ? "bg-warn" : "bg-accent"
                 )}
                 style={{ width: `${pct}%` }}
               />
@@ -80,28 +85,28 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
         </div>
       </div>
 
-      <div className="flex items-center gap-1 px-4 sm:px-5 pt-3 border-b rule pb-3 flex-wrap">
-        <button
-          onClick={runDraft}
-          className="btn btn-accent text-xs"
-        >
+      <div className="flex items-center gap-1 px-4 sm:px-5 pt-3 border-b border-border pb-3 flex-wrap">
+        <Button onClick={runDraft} variant="accent" size="sm">
           <Sparkles size={12} /> {section.content ? "Regenerate draft" : "Draft from kit"}
-        </button>
+        </Button>
         <div className="flex-1" />
         {section.versions.length > 0 && (
-          <button onClick={() => setMode(mode === "history" ? "edit" : "history")} className="btn btn-ghost text-xs">
+          <Button
+            onClick={() => setMode(mode === "history" ? "edit" : "history")}
+            variant="ghost"
+            size="sm"
+          >
             <History size={12} /> {section.versions.length} versions
-          </button>
+          </Button>
         )}
-        <button className="btn btn-ghost text-xs">
+        <Button variant="ghost" size="sm">
           <Wand2 size={12} /> Trim to limit
-        </button>
+        </Button>
       </div>
 
       {mode === "edit" && (
-        <textarea
-          className="textarea border-0 min-h-44 px-4 sm:px-5 py-4 focus:shadow-none focus:outline-none"
-          style={{ borderRadius: 0 }}
+        <Textarea
+          className="border-0 rounded-none min-h-44 px-4 sm:px-5 py-4 focus:ring-0 focus:outline-none"
           value={section.content}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Empty — click Draft from kit to generate, or write directly."
@@ -126,24 +131,24 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
       {mode === "history" && (
         <div className="px-5 py-4 space-y-3">
           {section.versions.map((v) => (
-            <div key={v.id} className="paper-card p-4">
+            <Card key={v.id} className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="eyebrow">{v.label}</div>
-                <div className="text-xs text-muted">{v.created_at}</div>
+                <div className="text-xs text-muted-foreground">{v.created_at}</div>
               </div>
-              <p className="font-serif text-[14px] leading-relaxed text-muted">{v.content}</p>
+              <p className="text-[14px] leading-relaxed text-muted-foreground">{v.content}</p>
               <div className="mt-3 flex justify-end">
-                <button className="btn btn-ghost text-xs">Restore</button>
+                <Button variant="ghost" size="sm">Restore</Button>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       )}
 
-      <div className="px-4 sm:px-5 py-3 border-t rule flex items-center gap-3 text-xs text-muted">
+      <div className="px-4 sm:px-5 py-3 border-t border-border flex items-center gap-3 text-xs text-muted-foreground">
         {overLimit ? (
           <>
-            <AlertTriangle size={13} className="text-accent" />
+            <AlertTriangle size={13} className="text-primary" />
             <span>{measured - spec.limit_value} {spec.limit_unit} over limit. Most funders auto-truncate. Trim before submit.</span>
           </>
         ) : nearLimit ? (
@@ -153,14 +158,14 @@ export function SectionEditor({ spec, section, onChange, mockDraft, values, anon
           </>
         ) : section.content ? (
           <>
-            <CheckCircle2 size={13} className="text-sage" />
+            <CheckCircle2 size={13} className="text-accent" />
             <span>Within limit. Last edited {section.last_edited}.</span>
           </>
         ) : (
           <span className="italic">Not started.</span>
         )}
       </div>
-    </div>
+    </Card>
   );
 }
 
@@ -186,59 +191,59 @@ function DraftPanel({
   return (
     <div>
       <div className="flex items-center gap-2 mb-3">
-        <Sparkles size={13} className="text-accent" />
+        <Sparkles size={13} className="text-primary" />
         <div className="eyebrow">Claude draft · two-pass · voice-preserving</div>
-        <button className="ml-auto text-muted hover:text-ink" onClick={onCancel}>
+        <button className="ml-auto text-muted-foreground hover:text-foreground" onClick={onCancel}>
           <X size={14} />
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] mb-3 text-muted">
-        <div className="paper-card p-2 bg-[#FBF8F1]">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] mb-3 text-muted-foreground">
+        <Card className="p-2 bg-sand-light rounded-lg">
           <div className="eyebrow text-[9px] mb-1">Pass 1 · recombine</div>
           Extracted phrases from your 250-word statement, the Outbuildings 1,500-word, and your Aliquippa Carrier long caption.
-        </div>
-        <div className="paper-card p-2 bg-[#FBF8F1]">
+        </Card>
+        <Card className="p-2 bg-sand-light rounded-lg">
           <div className="eyebrow text-[9px] mb-1">Pass 2 · tailor</div>
           Calibrated to: opportunity type, prompt structure, length limit, and the funder's stated values{anonymous ? "; name stripped from body" : ""}.
-        </div>
-        <div className="paper-card p-2 bg-[#FBF8F1]">
+        </Card>
+        <Card className="p-2 bg-sand-light rounded-lg">
           <div className="eyebrow text-[9px] mb-1">Self-check</div>
           Banned verbs absent. No false range. No name-drops without function. Active voice. Specific.
-        </div>
+        </Card>
       </div>
 
-      <div className="border rule p-4 sm:p-5 bg-[#FFFEFA] font-serif text-[15px] sm:text-[17px] leading-relaxed whitespace-pre-line">
+      <div className="border border-border rounded-lg p-4 sm:p-5 bg-card text-[15px] sm:text-[17px] leading-relaxed whitespace-pre-line">
         {streaming ? (
-          <div className="text-muted italic">Claude is drafting from your kit…</div>
+          <div className="text-muted-foreground italic">Claude is drafting from your kit…</div>
         ) : (
           renderDiff(content)
         )}
       </div>
 
       <div className="mt-3 flex items-center gap-2 text-xs">
-        <span className="chip chip-sage">+ added</span>
-        <span className="chip chip-accent">— from your statements / project / captions</span>
+        <Badge variant="accent">+ added</Badge>
+        <Badge variant="primary">— from your statements / project / captions</Badge>
       </div>
 
       <div className="mt-4">
         <div className="field-label">Regenerate with feedback</div>
         <div className="flex flex-col sm:flex-row gap-2">
-          <input
-            className="input flex-1"
+          <Input
+            className="flex-1"
             placeholder="e.g. 'more specific about Aliquippa', 'cut the conveyor description', 'lean into urgency'"
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
           />
-          <button className="btn btn-ghost shrink-0">
+          <Button variant="ghost" className="shrink-0">
             <RefreshCcw size={13} /> Regenerate
-          </button>
+          </Button>
         </div>
       </div>
 
       <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-end gap-2">
-        <button onClick={onCancel} className="btn btn-ghost">Discard</button>
-        <button onClick={onAccept} className="btn btn-primary">Accept into editor</button>
+        <Button onClick={onCancel} variant="ghost">Discard</Button>
+        <Button onClick={onAccept}>Accept into editor</Button>
       </div>
     </div>
   );
@@ -259,9 +264,6 @@ function renderDiff(text: string) {
     "Rivers of Steel",
     "ecological mourning"
   ];
-  const parts: { text: string; kind: "add" | "rm" | "plain" }[] = [];
-  let cursor = 0;
-  // mark new sentences containing "now" as additions (silly heuristic that demos the diff color)
   const sentenceSplit = text.split(/(?<=\.) /);
   return sentenceSplit.map((s, i) => {
     const isKitEcho = fromKit.some((k) => s.includes(k));

@@ -1,26 +1,28 @@
-import { cn } from "@/lib/cn";
+import { Badge } from "@/components/ui/badge";
 import { typeLabel } from "@/lib/format";
 
+type BadgeVariant = "default" | "primary" | "accent" | "warn" | "ink";
+
 export function TypePill({ type }: { type: string }) {
-  const map: Record<string, string> = {
-    residency: "chip-sage",
-    project_grant: "chip-accent",
-    fellowship: "chip-ink",
-    emergency: "chip-warn",
-    festival: "chip-sage",
-    prize: "chip-accent"
+  const map: Record<string, BadgeVariant> = {
+    residency: "accent",
+    project_grant: "primary",
+    fellowship: "ink",
+    emergency: "warn",
+    festival: "accent",
+    prize: "primary"
   };
-  return <span className={cn("chip", map[type] ?? "")}>{typeLabel(type)}</span>;
+  return <Badge variant={map[type] ?? "default"}>{typeLabel(type)}</Badge>;
 }
 
 export function StatusPill({ status }: { status: string }) {
-  const map: Record<string, string> = {
-    discovered: "",
-    drafting: "chip-warn",
-    ready: "chip-sage",
-    submitted: "chip-ink",
-    awarded: "chip-sage",
-    declined: "chip-accent"
+  const map: Record<string, BadgeVariant> = {
+    discovered: "default",
+    drafting: "warn",
+    ready: "accent",
+    submitted: "ink",
+    awarded: "accent",
+    declined: "primary"
   };
   const label: Record<string, string> = {
     discovered: "Discovered",
@@ -30,5 +32,5 @@ export function StatusPill({ status }: { status: string }) {
     awarded: "Awarded",
     declined: "Declined"
   };
-  return <span className={cn("chip", map[status] ?? "")}>{label[status] ?? status}</span>;
+  return <Badge variant={map[status] ?? "default"}>{label[status] ?? status}</Badge>;
 }

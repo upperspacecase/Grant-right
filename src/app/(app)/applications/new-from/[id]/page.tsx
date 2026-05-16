@@ -7,12 +7,13 @@ import { PageHeader } from "@/components/Shell";
 import { TypePill } from "@/components/Pill";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { currency, formatDate, relativeDeadline } from "@/lib/format";
-import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export default function NewFromOpportunity({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const router = useRouter();
-  const { opportunities, applications, addApplication } = useStore();
+  const { opportunities, addApplication } = useStore();
   const opp = opportunities.find((o) => o.id === id);
   if (!opp) return notFound();
   const safeOpp = opp;
@@ -47,16 +48,16 @@ export default function NewFromOpportunity({ params }: { params: Promise<{ id: s
         subtitle={`Confirm that you want to start drafting. We'll pre-populate the workspace from your kit. You can change any prefill before submit.`}
       />
       <div className="px-4 sm:px-6 md:px-8 py-6 sm:py-8 max-w-3xl space-y-6">
-        <div className="paper-card p-5">
+        <Card className="p-5">
           <div className="flex items-start justify-between mb-3">
             <TypePill type={opp.type} />
             <div className="eyebrow">{relativeDeadline(opp.deadline)} · {formatDate(opp.deadline)}</div>
           </div>
           <div className="text-sm">{opp.award}</div>
-          <div className="text-xs text-muted mt-2">{opp.fee ? `${currency(opp.fee)} application fee — pay at submit.` : "Free to apply."}</div>
-        </div>
+          <div className="text-xs text-muted-foreground mt-2">{opp.fee ? `${currency(opp.fee)} application fee — pay at submit.` : "Free to apply."}</div>
+        </Card>
 
-        <div className="paper-card p-5">
+        <Card className="p-5">
           <div className="eyebrow mb-3">From your kit, we'll auto-populate</div>
           <ul className="space-y-2 text-sm">
             <Auto label={`Bio — ${opp.type === "fellowship" ? "100-word variant" : "250-word variant"}`} />
@@ -66,13 +67,15 @@ export default function NewFromOpportunity({ params }: { params: Promise<{ id: s
             <Auto label="Work samples ordered by relevance to this funder's emphasis" />
             {opp.id === "opp_creative_capital" && <Auto label="Outbuildings budget template — copied as starting budget" />}
           </ul>
-        </div>
+        </Card>
 
         <div className="flex justify-end gap-2">
-          <Link href="/applications" className="btn btn-ghost">Cancel</Link>
-          <button onClick={start} className="btn btn-primary">
+          <Button asChild variant="ghost">
+            <Link href="/applications">Cancel</Link>
+          </Button>
+          <Button onClick={start}>
             Start drafting <ArrowRight size={13} />
-          </button>
+          </Button>
         </div>
       </div>
     </>
@@ -82,7 +85,7 @@ export default function NewFromOpportunity({ params }: { params: Promise<{ id: s
 function Auto({ label }: { label: string }) {
   return (
     <li className="flex items-start gap-2">
-      <CheckCircle2 size={13} className="text-sage shrink-0 mt-0.5" />
+      <CheckCircle2 size={13} className="text-accent shrink-0 mt-0.5" />
       <span>{label}</span>
     </li>
   );

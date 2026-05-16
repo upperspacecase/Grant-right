@@ -3,6 +3,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, ArrowLeft, Check, Upload, Link as LinkIcon } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const steps = [
   { key: "identity", label: "Identity & eligibility" },
@@ -14,10 +19,10 @@ const steps = [
 export default function OnboardingPage() {
   const [step, setStep] = useState(0);
   return (
-    <div className="min-h-screen bg-paper text-ink flex flex-col md:flex-row">
+    <div className="min-h-screen bg-background text-foreground flex flex-col md:flex-row">
       {/* Mobile: top header + progress strip */}
-      <div className="md:hidden border-b rule bg-[#FBF8F1] px-5 py-4">
-        <Link href="/" className="block font-display text-xl mb-1">Grant-Right</Link>
+      <div className="md:hidden border-b border-border bg-muted px-5 py-4">
+        <Link href="/" className="block font-heading text-xl mb-1">Grant-Right</Link>
         <div className="eyebrow mb-3">Set up your kit · step {step + 1} of {steps.length}</div>
         <div className="flex items-center gap-2">
           {steps.map((s, i) => (
@@ -25,35 +30,35 @@ export default function OnboardingPage() {
               key={s.key}
               className={cn(
                 "flex-1 h-1 rounded-full",
-                i < step ? "bg-sage" : i === step ? "bg-ink" : "bg-rule"
+                i < step ? "bg-accent" : i === step ? "bg-foreground" : "bg-border"
               )}
             />
           ))}
         </div>
-        <div className="mt-2 text-[12px] text-ink font-medium">{steps[step].label}</div>
+        <div className="mt-2 text-[12px] text-foreground font-medium">{steps[step].label}</div>
       </div>
 
       {/* Desktop sidebar */}
-      <aside className="hidden md:block w-72 shrink-0 border-r rule bg-[#FBF8F1] p-8">
-        <Link href="/" className="block font-display text-2xl mb-1">Grant-Right</Link>
+      <aside className="hidden md:block w-72 shrink-0 border-r border-border bg-muted p-8">
+        <Link href="/" className="block font-heading text-2xl mb-1">Grant-Right</Link>
         <div className="eyebrow mb-8">Set up your kit</div>
         <ol className="space-y-1">
           {steps.map((s, i) => (
             <li
               key={s.key}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-sm text-[13px]",
-                i === step ? "bg-ink text-paper" : "text-muted"
+                "flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px]",
+                i === step ? "bg-foreground text-background" : "text-muted-foreground"
               )}
             >
               <span
                 className={cn(
                   "size-5 rounded-full border flex items-center justify-center text-[10px]",
                   i < step
-                    ? "bg-sage text-paper border-sage"
+                    ? "bg-accent text-accent-foreground border-accent"
                     : i === step
-                    ? "border-paper text-paper"
-                    : "border-rule"
+                    ? "border-background text-background"
+                    : "border-border"
                 )}
               >
                 {i < step ? <Check size={11} /> : i + 1}
@@ -62,7 +67,7 @@ export default function OnboardingPage() {
             </li>
           ))}
         </ol>
-        <div className="mt-12 text-xs text-muted leading-relaxed">
+        <div className="mt-12 text-xs text-muted-foreground leading-relaxed">
           Setup takes ~10 minutes. You can edit anything later in <Link href="/kit" className="underline">The Kit</Link>.
         </div>
       </aside>
@@ -81,30 +86,32 @@ function StepHeader({ eyebrow, title, subtitle }: { eyebrow: string; title: stri
   return (
     <div className="mb-6 md:mb-8">
       <div className="eyebrow mb-3">{eyebrow}</div>
-      <h2 className="font-display text-2xl sm:text-3xl leading-tight mb-3">{title}</h2>
-      <p className="text-muted text-[14px] sm:text-[15px] max-w-prose2 leading-relaxed">{subtitle}</p>
+      <h2 className="font-heading text-2xl sm:text-3xl leading-tight mb-3">{title}</h2>
+      <p className="text-muted-foreground text-[14px] sm:text-[15px] max-w-prose2 leading-relaxed">{subtitle}</p>
     </div>
   );
 }
 
 function Footer({ onNext, onBack, nextLabel = "Continue" }: { onNext?: () => void; onBack?: () => void; nextLabel?: string }) {
   return (
-    <div className="flex items-center justify-between border-t rule pt-6 mt-10">
+    <div className="flex items-center justify-between border-t border-border pt-6 mt-10">
       {onBack ? (
-        <button onClick={onBack} className="btn btn-ghost">
+        <Button onClick={onBack} variant="ghost">
           <ArrowLeft size={13} /> Back
-        </button>
+        </Button>
       ) : (
         <div />
       )}
       {onNext ? (
-        <button onClick={onNext} className="btn btn-primary">
+        <Button onClick={onNext}>
           {nextLabel} <ArrowRight size={13} />
-        </button>
+        </Button>
       ) : (
-        <Link href="/dashboard" className="btn btn-primary">
-          Enter Grant-Right <ArrowRight size={13} />
-        </Link>
+        <Button asChild>
+          <Link href="/dashboard">
+            Enter Grant-Right <ArrowRight size={13} />
+          </Link>
+        </Button>
       )}
     </div>
   );
@@ -132,7 +139,7 @@ function Identity({ onNext }: { onNext: () => void }) {
         <input type="checkbox" className="mt-1" defaultChecked={false} />
         <span>
           I am currently enrolled in a degree program.{" "}
-          <span className="text-muted text-xs">
+          <span className="text-muted-foreground text-xs">
             Many fellowships (NYFA, Jerome, Creative Capital) disqualify enrolled students.
           </span>
         </span>
@@ -156,20 +163,20 @@ function Disciplines({ onNext, onBack }: { onNext: () => void; onBack: () => voi
         <div>
           <div className="field-label">Secondary disciplines</div>
           <div className="flex flex-wrap gap-2">
-            <span className="chip chip-ink">Installation</span>
-            <span className="chip chip-ink">Video</span>
-            <button className="chip">+ Add</button>
+            <Badge variant="ink">Installation</Badge>
+            <Badge variant="ink">Video</Badge>
+            <button type="button"><Badge>+ Add</Badge></button>
           </div>
         </div>
         <div>
           <div className="field-label">Keywords your practice keeps returning to</div>
           <div className="flex flex-wrap gap-2">
             {tags.map((t) => (
-              <span key={t} className="chip">{t}</span>
+              <Badge key={t}>{t}</Badge>
             ))}
-            <button className="chip">+ Add</button>
+            <button type="button"><Badge>+ Add</Badge></button>
           </div>
-          <div className="mt-2 text-xs text-muted">Used by AI drafts to recombine your existing language before generating new prose.</div>
+          <div className="mt-2 text-xs text-muted-foreground">Used by AI drafts to recombine your existing language before generating new prose.</div>
         </div>
       </div>
       <Footer onNext={onNext} onBack={onBack} />
@@ -237,13 +244,13 @@ function ImportCard({
 }) {
   const Icon = icon === "upload" ? Upload : LinkIcon;
   return (
-    <button className="paper-card p-5 text-left hover:bg-[#FBF8F1] transition-colors">
+    <button className="text-left rounded-xl border border-border bg-card hover:bg-muted transition-colors p-5">
       <div className="flex items-start justify-between mb-2">
-        <Icon size={16} className="text-muted" strokeWidth={1.6} />
-        {status && <span className="chip chip-sage">Recommended</span>}
+        <Icon size={16} className="text-muted-foreground" strokeWidth={1.6} />
+        {status && <Badge variant="accent">Recommended</Badge>}
       </div>
-      <div className="font-display text-lg">{title}</div>
-      <div className="text-xs text-muted mt-1 leading-relaxed">{subtitle}</div>
+      <div className="font-heading text-lg">{title}</div>
+      <div className="text-xs text-muted-foreground mt-1 leading-relaxed">{subtitle}</div>
     </button>
   );
 }
@@ -258,11 +265,11 @@ function FirstStatement({ onBack }: { onBack: () => void }) {
       />
       <div>
         <div className="field-label">A paragraph about your practice, in your own words</div>
-        <textarea
-          className="textarea min-h-48"
+        <Textarea
+          className="min-h-48"
           defaultValue="I make sculptures and room-scale installations from materials sourced inside closed steel mills and textile plants across western Pennsylvania and the Ohio Valley. I work with rolling-mill remnants, fabric scraps from defunct cotton mills, and conveyor pulls — restitched, riveted, hung — into figures that refuse the tidy narrative of the post-industrial. The pieces are part archive, part body. They sit between mourning and refusal: the landscape didn't die, it was unmade, and the materials still have a position on the matter."
         />
-        <div className="mt-2 text-xs text-muted">
+        <div className="mt-2 text-xs text-muted-foreground">
           Tip: include concrete materials, places, names. The drafting AI is instructed to reuse your phrases before inventing new ones.
         </div>
       </div>
@@ -275,7 +282,7 @@ function Field({ label, defaultValue }: { label: string; defaultValue?: string }
   return (
     <div>
       <div className="field-label">{label}</div>
-      <input className="input" defaultValue={defaultValue} />
+      <Input defaultValue={defaultValue} />
     </div>
   );
 }

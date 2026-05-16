@@ -6,6 +6,9 @@ import { TypePill } from "@/components/Pill";
 import { useStore } from "@/lib/store";
 import { formatDate, relativeDeadline } from "@/lib/format";
 import { ArrowRight, Search, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function NewApplicationPage() {
   const { opportunities, applications } = useStore();
@@ -22,18 +25,20 @@ export default function NewApplicationPage() {
         title="Pick an opportunity to apply to"
         subtitle="Start from an opportunity already in your library, or add a new one if you've found a call we don't have yet."
         actions={
-          <Link href="/opportunities/new" className="btn btn-ghost">
-            <Plus size={13} /> Add new opportunity
-          </Link>
+          <Button asChild variant="ghost">
+            <Link href="/opportunities/new">
+              <Plus size={13} /> Add new opportunity
+            </Link>
+          </Button>
         }
       />
       <div className="px-4 sm:px-6 md:px-8 py-6">
         <div className="relative max-w-xl mb-6">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-          <input
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            className="input pl-9"
+            className="pl-9"
             placeholder="Search opportunities you haven't started yet…"
           />
         </div>
@@ -42,17 +47,19 @@ export default function NewApplicationPage() {
             <Link
               href={`/applications/new-from/${o.id}`}
               key={o.id}
-              className="paper-card p-5 hover:bg-[#FBF8F1] block"
+              className="block"
             >
-              <div className="flex items-start justify-between mb-2">
-                <TypePill type={o.type} />
-                <div className="eyebrow">{relativeDeadline(o.deadline)}</div>
-              </div>
-              <div className="font-display text-xl leading-tight">{o.program}</div>
-              <div className="text-xs text-muted mt-1">{o.funder} · {formatDate(o.deadline)}</div>
-              <div className="mt-4 text-xs flex items-center gap-1 text-ink">
-                Start drafting <ArrowRight size={12} />
-              </div>
+              <Card className="p-5 hover:bg-muted h-full">
+                <div className="flex items-start justify-between mb-2">
+                  <TypePill type={o.type} />
+                  <div className="eyebrow">{relativeDeadline(o.deadline)}</div>
+                </div>
+                <div className="font-heading text-xl leading-tight">{o.program}</div>
+                <div className="text-xs text-muted-foreground mt-1">{o.funder} · {formatDate(o.deadline)}</div>
+                <div className="mt-4 text-xs flex items-center gap-1 text-foreground">
+                  Start drafting <ArrowRight size={12} />
+                </div>
+              </Card>
             </Link>
           ))}
         </div>

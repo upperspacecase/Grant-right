@@ -1,54 +1,147 @@
-@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Legacy named colors mapped onto the new palette so existing
+     bg-paper / text-ink / text-muted / border-rule / text-accent /
+     text-sage / text-warn utilities keep working but render in the
+     new design language. */
+  --color-paper: var(--background);
+  --color-ink: var(--foreground);
+  --color-rule: var(--border);
+  --color-sage: var(--sage-strong);
+  --color-warn: var(--warn-strong);
+
+  /* Extra palette from the reference design system */
+  --color-coral: #E8756A;
+  --color-coral-light: #F4A59E;
+  --color-sage-light: #B5D4B8;
+  --color-sky: #6AAFE8;
+  --color-sky-light: #A8D4F5;
+  --color-lavender: #B8A9D4;
+  --color-lavender-light: #D9D0EA;
+  --color-sand: #F5E6C8;
+  --color-sand-light: #FBF3E4;
+  --color-cream: #FFF8F0;
+  --color-peach: #F8D5C8;
+  --color-mint: #C8E6D0;
+
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+  --font-heading: var(--font-fredoka), system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
 
 :root {
+  --background: #FFF8F0;
+  --foreground: #2D2A32;
+  --card: #FFFFFF;
+  --card-foreground: #2D2A32;
+  --popover: #FFFFFF;
+  --popover-foreground: #2D2A32;
+  --primary: #E8756A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #B8A9D4;
+  --secondary-foreground: #2D2A32;
+  --muted: #FBF3E4;
+  --muted-foreground: #6B6575;
+  --accent: #7BAE7F;
+  --accent-foreground: #FFFFFF;
+  --destructive: #E8756A;
+  --border: #E8DDD0;
+  --input: #E8DDD0;
+  --ring: #B8A9D4;
+  --radius: 0.75rem;
+
+  /* Stronger variants for legacy text-sage / text-warn usage where
+     the original palette had darker on-paper colors. */
+  --sage-strong: #4F7C53;
+  --warn-strong: #C77A2E;
+
   color-scheme: light;
 }
 
-html,
-body {
-  background: #f7f4ee;
-  color: #1a1a1a;
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html,
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+  body {
+    font-family: var(--font-nunito), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+  }
+  * {
+    -webkit-text-size-adjust: 100%;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-fredoka), system-ui, sans-serif;
+  }
 }
 
-body {
-  font-family: var(--font-sans, "Inter"), system-ui, sans-serif;
-  font-feature-settings: "ss01", "cv11";
-  -webkit-font-smoothing: antialiased;
-  -webkit-tap-highlight-color: transparent;
-  overflow-x: hidden;
-}
-
-* {
-  -webkit-text-size-adjust: 100%;
-}
+/* ---------------------------------------------------------------------------
+   Legacy utility classes.
+   Kept under the same names so existing pages render in the new style without
+   per-file rewrites. Visuals are remapped to the artist-residency design
+   system: cream background, coral primary, sage accent, Fredoka display,
+   Nunito body, 0.75rem radius scale.
+---------------------------------------------------------------------------- */
 
 .font-display {
-  font-family: "EB Garamond", Georgia, serif;
+  font-family: var(--font-fredoka), system-ui, sans-serif;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
+.font-serif {
+  font-family: var(--font-nunito), system-ui, sans-serif;
+}
 
 .eyebrow {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-nunito), system-ui, sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   font-size: 10px;
-  font-weight: 600;
-  color: #6b6259;
+  font-weight: 700;
+  color: var(--muted-foreground);
 }
 
 .rule {
-  border-color: #d9d2c5;
+  border-color: var(--border);
 }
 
 .paper-card {
-  background: #fffdf7;
-  border: 1px solid #e7ddc9;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.1);
+  box-shadow: 0 1px 2px rgba(45, 42, 50, 0.04);
 }
 
 .btn {
@@ -56,69 +149,71 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 0.55rem 1rem;
-  border-radius: 1px;
+  border-radius: calc(var(--radius) * 0.8);
   font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  transition: all 0.15s ease;
+  font-weight: 600;
+  letter-spacing: 0;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
   border: 1px solid transparent;
   cursor: pointer;
 }
+.btn:active {
+  transform: translateY(1px);
+}
 .btn-primary {
-  background: #1a1a1a;
-  color: #f7f4eea0;
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 .btn-primary:hover {
-  background: #2e2e2e;
-  color: #fff;
+  background: color-mix(in oklab, var(--primary) 88%, black);
 }
 .btn-ghost {
-  background: transparent;
-  color: #1a1a1a;
-  border-color: #d9d2c5;
+  background: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
 }
 .btn-ghost:hover {
-  background: #efe9da;
+  background: var(--muted);
 }
 .btn-accent {
-  background: #7a2e1f;
-  color: #f7f4ee;
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 .btn-accent:hover {
-  background: #5f2418;
+  background: color-mix(in oklab, var(--accent) 88%, black);
 }
 
 .field-label {
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-nunito), system-ui, sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 10px;
-  font-weight: 600;
-  color: #6b6259;
+  font-weight: 700;
+  color: var(--muted-foreground);
   margin-bottom: 0.4rem;
 }
 
 .input,
 .textarea {
   width: 100%;
-  background: #fffdf7;
-  border: 1px solid #d9d2c5;
-  padding: 0.55rem 0.7rem;
-  border-radius: 1px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  border-radius: calc(var(--radius) * 0.8);
   font-size: 14px;
-  color: #1a1a1a;
+  color: var(--foreground);
   font-family: inherit;
 }
 .input:focus,
 .textarea:focus {
   outline: none;
-  border-color: #1a1a1a;
-  box-shadow: 0 0 0 1px #1a1a1a;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 35%, transparent);
 }
 .textarea {
-  font-family: "EB Garamond", Georgia, serif;
-  font-size: 17px;
-  line-height: 1.55;
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
   resize: vertical;
 }
 
@@ -126,31 +221,66 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.2rem 0.5rem;
+  padding: 0.2rem 0.6rem;
   font-size: 11px;
-  border: 1px solid #d9d2c5;
-  background: #fffdf7;
-  color: #6b6259;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted-foreground);
   border-radius: 999px;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-weight: 700;
 }
-.chip-sage { color: #5b6f5a; border-color: #c5d0c4; background: #eef2ec; }
-.chip-warn { color: #a86a1a; border-color: #ead4ad; background: #faf1de; }
-.chip-accent { color: #7a2e1f; border-color: #ecccc4; background: #f7e5df; }
-.chip-ink { color: #f7f4ee; background: #1a1a1a; border-color: #1a1a1a; }
+.chip-sage {
+  color: #2F5A33;
+  border-color: #B5D4B8;
+  background: #C8E6D0;
+}
+.chip-warn {
+  color: #8A5A1A;
+  border-color: #EAD4AD;
+  background: #F5E6C8;
+}
+.chip-accent {
+  color: #B33D31;
+  border-color: #F4A59E;
+  background: #F8D5C8;
+}
+.chip-ink {
+  color: var(--background);
+  background: var(--foreground);
+  border-color: var(--foreground);
+}
 
 .divider-dots {
-  background-image: radial-gradient(circle, #c8bfac 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
   background-size: 6px 6px;
   background-position: 0 50%;
   background-repeat: repeat-x;
   height: 6px;
 }
 
-.scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
-.scrollbar-thin::-webkit-scrollbar-thumb { background: #d9d2c5; border-radius: 3px; }
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
 
-.diff-add { background: #eaf3e3; color: #2c4a26; }
-.diff-rm  { background: #fbe7e2; color: #7a2e1f; text-decoration: line-through; }
+.diff-add {
+  background: #C8E6D0;
+  color: #2F5A33;
+}
+.diff-rm {
+  background: #F8D5C8;
+  color: #B33D31;
+  text-decoration: line-through;
+}
+
+/* The original config exposed maxWidth.prose2 = 68ch. Recreate as a utility
+   class so existing max-w-prose2 references keep working in v4. */
+.max-w-prose2 {
+  max-width: 68ch;
+}

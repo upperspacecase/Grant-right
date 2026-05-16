@@ -1,84 +1,193 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
+import { Navbar } from "@/components/Navbar";
+import { ResidencyCard } from "@/components/ResidencyCard";
+import { HowItWorks } from "@/components/HowItWorks";
+import { FeaturedArtists } from "@/components/FeaturedArtists";
+import { CTASection } from "@/components/CTASection";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 
-export default function LandingPage() {
+const featuredResidencies = [
+  {
+    title: "Alpine Studio",
+    location: "Swiss Alps",
+    duration: "2 Months",
+    imageUrl:
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop",
+    disciplines: ["Painting", "Sculpture"],
+    hasStipend: true,
+    color: "#7BAE7F",
+  },
+  {
+    title: "Urban Loft",
+    location: "Berlin, DE",
+    duration: "1 Month",
+    imageUrl:
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=600&h=400&fit=crop",
+    disciplines: ["Digital Art", "Photography"],
+    hasStipend: false,
+    color: "#6AAFE8",
+  },
+  {
+    title: "Coastal Haven",
+    location: "Lisbon, PT",
+    duration: "6 Weeks",
+    imageUrl:
+      "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&h=400&fit=crop",
+    disciplines: ["Ceramics", "Textiles"],
+    hasStipend: true,
+    color: "#E8756A",
+  },
+  {
+    title: "Beachfront Residency",
+    location: "Bali, ID",
+    duration: "3 Months",
+    imageUrl:
+      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&h=400&fit=crop",
+    disciplines: ["Mixed Media"],
+    hasStipend: true,
+    color: "#B8A9D4",
+  },
+];
+
+export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border">
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between gap-3">
-          <div className="font-heading text-xl sm:text-2xl">Grant-Right</div>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Link href="/sign-in" className="text-sm text-muted-foreground hover:text-foreground">Sign in</Link>
-            <Button asChild>
-              <Link href="/sign-up">
-                <span className="hidden sm:inline">Start free</span><span className="sm:hidden">Start</span> <ArrowRight size={13} />
-              </Link>
+    <div className="min-h-screen bg-background">
+      <Navbar />
+
+      {/* Hero Section */}
+      <section className="relative pt-28 pb-20 px-4 overflow-hidden">
+        {/* Decorative background */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-20 -left-20 h-80 w-80 rounded-full bg-coral/15 blur-3xl" />
+          <div className="absolute top-40 right-0 h-96 w-96 rounded-full bg-lavender/15 blur-3xl" />
+          <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-sage/15 blur-3xl" />
+          <div className="absolute top-60 left-1/2 h-64 w-64 rounded-full bg-sky/10 blur-3xl" />
+          <div className="absolute bottom-20 right-1/4 h-48 w-48 rounded-full bg-sand/30 blur-3xl" />
+
+          {/* Geometric shapes */}
+          <div className="absolute top-32 right-20 h-20 w-20 rounded-2xl bg-peach/40 rotate-12" />
+          <div className="absolute bottom-40 left-20 h-16 w-16 rounded-full bg-mint/40" />
+          <div className="absolute top-1/2 right-1/3 h-12 w-12 rounded-lg bg-lavender-light/50 -rotate-6" />
+        </div>
+
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left: Copy */}
+            <div className="max-w-xl">
+              <div className="inline-flex items-center gap-2 rounded-full bg-sand/60 px-4 py-1.5 text-sm font-medium text-foreground mb-6">
+                <span className="h-2 w-2 rounded-full bg-sage animate-pulse" />
+                Now accepting applications
+              </div>
+
+              <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6">
+                Connecting
+                <br />
+                Artists With
+                <br />
+                <span className="text-coral">Residency Hosts</span>
+              </h1>
+
+              <p className="text-lg text-muted-foreground mb-4 font-semibold uppercase tracking-wide">
+                A Two-Sided Marketplace.
+              </p>
+              <p className="text-base text-muted-foreground mb-8 leading-relaxed max-w-md">
+                Artists create rich profiles; Hosts list unique spaces to
+                discover and invite. Find your next creative home anywhere in
+                the world.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-coral hover:bg-coral/90 text-white rounded-xl text-base px-8 h-13 font-heading font-semibold cursor-pointer"
+                >
+                  <Link href="/sign-up">
+                    Join Now
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="border-lavender bg-lavender/20 hover:bg-lavender/30 text-foreground rounded-xl text-base px-8 h-13 font-heading font-semibold cursor-pointer"
+                >
+                  <Link href="/opportunities">Explore Residencies</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Right: Featured Residencies Grid */}
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-heading text-xl font-semibold text-foreground">
+                  Featured Residencies
+                </h2>
+                <Link
+                  href="/opportunities"
+                  className="text-sm text-coral hover:text-coral/80 font-medium flex items-center gap-1 cursor-pointer transition-colors"
+                >
+                  View all
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {featuredResidencies.map((residency) => (
+                  <ResidencyCard key={residency.title} {...residency} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Search Bar Section */}
+      <section className="py-12 px-4 bg-white">
+        <div className="mx-auto max-w-3xl">
+          <div className="flex items-center gap-3 rounded-2xl border border-border bg-cream p-2 shadow-sm">
+            <div className="flex-1 flex items-center gap-3 px-4">
+              <Search className="h-5 w-5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search by location, discipline, or keyword..."
+                className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
+              />
+            </div>
+            <Button className="bg-coral hover:bg-coral/90 text-white rounded-xl px-6 cursor-pointer">
+              Search
             </Button>
           </div>
         </div>
-      </header>
+      </section>
 
-      <section className="max-w-5xl mx-auto px-5 sm:px-8 pt-12 sm:pt-24 pb-12 sm:pb-16">
-        <div className="eyebrow mb-5">A grant workspace for working artists</div>
-        <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl leading-[1.05] max-w-prose2">
-          Stop re-typing your bio in fifty-word increments.
-        </h1>
-        <p className="mt-5 sm:mt-6 text-base sm:text-lg text-muted-foreground max-w-prose2 leading-relaxed">
-          Grant-Right is a workspace built around the way artists actually apply: a versioned
-          kit of statements, CV, works, projects, and references — projected into each funder's
-          prompts and limits by a Claude-powered draft that{" "}
-          <span className="text-foreground italic">amplifies your voice</span> instead of flattening it.
-        </p>
-        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-          <Button asChild>
-            <Link href="/dashboard">
-              Enter the prototype <ArrowRight size={13} />
-            </Link>
-          </Button>
-          <Button asChild variant="ghost">
-            <Link href="/sign-up">Sign up</Link>
-          </Button>
-        </div>
-        <div className="mt-4 text-xs text-muted-foreground">
-          Prototype seeded with Mira Okonkwo, a fictional Brooklyn-based sculptor, applying to MacDowell, Creative Capital, NYSCA/NYFA, FCA Emergency, and Rijksakademie.
+      {/* Stats */}
+      <section className="py-16 px-4 bg-white">
+        <div className="mx-auto max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[
+            { value: "2,400+", label: "Artists", color: "text-coral" },
+            { value: "850+", label: "Residencies", color: "text-sage" },
+            { value: "45+", label: "Countries", color: "text-sky" },
+            { value: "12K+", label: "Connections Made", color: "text-lavender" },
+          ].map((stat) => (
+            <div key={stat.label}>
+              <p className={`font-heading text-3xl font-bold ${stat.color}`}>
+                {stat.value}
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                {stat.label}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-5 sm:px-8 pb-16 sm:pb-24 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <Feature
-          eyebrow="01 / The Kit"
-          title="One profile, all the lengths"
-          body="Statements in 50, 100, 250, 500-word variants. Bios in three lengths. CV entries as typed records, not a Word doc. Works with captions that render to each funder's metadata spec."
-        />
-        <Feature
-          eyebrow="02 / Calibrated drafts"
-          title="Voice in, draft out"
-          body="Claude drafts each section from your kit, recombining your existing language first. Then tailors to the funder's prompt, length, type, and stated values. Diffable. Never blackbox."
-        />
-        <Feature
-          eyebrow="03 / Submission discipline"
-          title="No auto-disqualifications"
-          body="Hard fails before submit: word counts, file naming, anonymity rules, eligibility flags, prior-award wait periods. Export PDF in the funder's exact format."
-        />
-      </section>
-
-      <footer className="border-t border-border">
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 py-6 sm:py-8 text-xs text-muted-foreground flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div>© 2026 Grant-Right · A research prototype</div>
-          <div>Grounded in: MacDowell · Creative Capital · NYFA · FCA · Rijksakademie</div>
-        </div>
-      </footer>
-    </div>
-  );
-}
-
-function Feature({ eyebrow, title, body }: { eyebrow: string; title: string; body: string }) {
-  return (
-    <div>
-      <div className="eyebrow mb-3">{eyebrow}</div>
-      <h3 className="font-heading text-2xl leading-tight mb-3">{title}</h3>
-      <p className="text-muted-foreground text-sm leading-relaxed">{body}</p>
+      <HowItWorks />
+      <FeaturedArtists />
+      <CTASection />
+      <Footer />
     </div>
   );
 }
